@@ -16,11 +16,11 @@ public class DispensedProjectileDamageInfo extends ProjectileDamageInfo {
         this.dispenserOwner = dispenserOwner;
     }
 
-    public @Nullable OfflinePlayer getdispenserOwner() {
+    public @Nullable OfflinePlayer getDispenserOwner() {
         return this.dispenserOwner;
     }
 
-    protected final @Nonnull OfflinePlayer dispenserOwner;
+    protected final @Nullable OfflinePlayer dispenserOwner;
     
     @Override
     public @Nonnull String toString() {
