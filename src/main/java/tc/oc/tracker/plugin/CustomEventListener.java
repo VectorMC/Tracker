@@ -55,8 +55,8 @@ public class CustomEventListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerOnGroundCall(PlayerCoarseMoveEvent event) {
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onPlayerOnGroundCall(PlayerMoveEvent event) {
         updateOnGroundStatus(event.getPlayer());
     }
 

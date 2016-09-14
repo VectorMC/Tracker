@@ -32,7 +32,7 @@ public class SimpleGravityKillTracker extends AbstractTracker {
     public static final long MAX_SPLEEF_TIME = 20;
 
     // A player's fall is cancelled if they are on the ground continuously for more than this many ticks
-    public static final long MAX_ON_GROUND_TIME = 10;
+    public static final long MAX_ON_GROUND_TIME = 40;
 
     // A player's fall is cancelled if they touch the ground more than this many times
     public static final long MAX_GROUND_TOUCHES = 2;
@@ -83,16 +83,30 @@ public class SimpleGravityKillTracker extends AbstractTracker {
             if(fall.isFalling) {
                 if (!fall.isInLava) {
                     if (fall.victim.isOnGround()) {
-                        if(now - fall.onGroundTime > MAX_ON_GROUND_TIME) this.cancelFall(fall);
-                        if(fall.groundTouchCount > MAX_GROUND_TOUCHES) this.cancelFall(fall);
+                        if(now - fall.onGroundTime > MAX_ON_GROUND_TIME) {
+                            this.cancelFall(fall);
+                        }
+                        if(fall.groundTouchCount > MAX_GROUND_TOUCHES) {
+                            this.cancelFall(fall);
+                        }
                     }
-                    if (fall.isSwimming && now - fall.swimmingTime > MAX_SWIMMING_TIME) this.cancelFall(fall);
-                    if (fall.isClimbing && now - fall.climbingTime > MAX_CLIMBING_TIME) this.cancelFall(fall);
+                    if (fall.isSwimming && now - fall.swimmingTime > MAX_SWIMMING_TIME) {
+                        this.cancelFall(fall);
+                    }
+                    if (fall.isClimbing && now - fall.climbingTime > MAX_CLIMBING_TIME) {
+                        this.cancelFall(fall);
+                    }
                 }
             } else {
-                if (fall.victim.isOnGround() && now - fall.attackTime > MAX_KNOCKBACK_TIME) this.cancelFall(fall);
-                if (fall.isSwimming && now - fall.attackTime > MAX_KNOCKBACK_TIME) this.cancelFall(fall);
-                if (fall.isClimbing && now - fall.attackTime > MAX_KNOCKBACK_TIME) this.cancelFall(fall);
+                if (fall.victim.isOnGround() && now - fall.attackTime > MAX_KNOCKBACK_TIME) {
+                    this.cancelFall(fall);
+                }
+                if (fall.isSwimming && now - fall.attackTime > MAX_KNOCKBACK_TIME) {
+                    this.cancelFall(fall);
+                }
+                if (fall.isClimbing && now - fall.attackTime > MAX_KNOCKBACK_TIME) {
+                    this.cancelFall(fall);
+                }
             }
         }
     }
