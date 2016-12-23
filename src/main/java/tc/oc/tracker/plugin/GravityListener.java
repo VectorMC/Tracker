@@ -11,7 +11,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import tc.oc.tracker.event.PlayerOnGroundEvent;
+import org.bukkit.event.player.PlayerOnGroundEvent;
 import tc.oc.tracker.trackers.base.gravity.SimpleGravityKillTracker;
 
 import javax.annotation.Nonnull;

@@ -5,7 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
-import tc.oc.tracker.event.PlayerSpawnEntityEvent;
+import org.bukkit.event.player.PlayerSpawnEntityEvent;
 import tc.oc.tracker.trackers.OwnedMobTracker;
 
 public class OwnedMobListener implements Listener {
