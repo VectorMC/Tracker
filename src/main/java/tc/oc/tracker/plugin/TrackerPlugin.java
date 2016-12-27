@@ -65,6 +65,7 @@ public class TrackerPlugin extends JavaPlugin {
 
         this.registerEvents(new ExplosiveListener(explosiveTracker));
         this.registerEvents(new GravityListener(this, gravityKillTracker));
+        this.registerEvents(new CustomEventListener());
 
         tm.setTracker(ExplosiveTracker.class, explosiveTracker);
         tm.setTracker(SimpleGravityKillTracker.class, gravityKillTracker);
