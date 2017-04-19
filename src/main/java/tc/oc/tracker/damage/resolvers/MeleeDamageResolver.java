@@ -31,7 +31,7 @@ public class MeleeDamageResolver implements DamageResolver {
                     weaponMaterial = Material.AIR;
                 }
 
-                return new SimpleMeleeDamageInfo(attacker, weaponMaterial);
+                return new SimpleMeleeDamageInfo(attacker, held);
             }
         }
 

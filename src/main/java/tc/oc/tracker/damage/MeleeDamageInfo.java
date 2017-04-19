@@ -1,10 +1,12 @@
 package tc.oc.tracker.damage;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 
+import org.bukkit.inventory.ItemStack;
 import tc.oc.tracker.DamageInfo;
 
 /**
@@ -28,4 +30,13 @@ public interface MeleeDamageInfo extends DamageInfo {
      * @return Material of weapon used
      */
     @Nonnull Material getWeapon();
+
+    /**
+     * Gets the item stack of the weapon that the assailant used.
+     *
+     * Note: fist kills will return null.
+     *
+     * @return Stack of weapon used
+     */
+    @Nullable ItemStack getWeaponStack();
 }
