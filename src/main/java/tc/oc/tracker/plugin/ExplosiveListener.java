@@ -4,23 +4,30 @@ import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockDispenseEntityEvent;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.ExplosionPrimeByEntityEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 
+import tc.oc.tracker.Trackers;
+import tc.oc.tracker.trackers.DispenserTracker;
 import tc.oc.tracker.trackers.ExplosiveTracker;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import tc.oc.tracker.trackers.OwnedMobTracker;
 
 public class ExplosiveListener implements Listener {
     private final ExplosiveTracker tracker;
@@ -85,35 +92,43 @@ public class ExplosiveListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onTNTIgnite(ExplosionPrimeEvent event) {
-        if(!this.tracker.isEnabled(event.getEntity().getWorld())) return;
+        if (!this.tracker.isEnabled(event.getEntity().getWorld())) return;
 
-        if(event.getEntity() instanceof TNTPrimed) {
+        if (event.getEntity() instanceof TNTPrimed) {
             TNTPrimed tnt = (TNTPrimed) event.getEntity();
-            Block block = event.getEntity().getWorld().getBlockAt(event.getEntity().getLocation());
-            if(block != null) {
-                Player placer = this.tracker.setPlacer(block, null);
-                if(placer != null) {
-                    this.tracker.setOwner(tnt, placer);
+            Player owner = null;
+            if (event instanceof ExplosionPrimeByEntityEvent) {
+                Entity primer = ((ExplosionPrimeByEntityEvent) event).getPrimer();
+                if (primer instanceof TNTPrimed) {
+                    owner = this.tracker.getOwner((TNTPrimed) primer);
+                } else {
+                    if (!primer.isDead()) {
+                        owner = Trackers.getTracker(OwnedMobTracker.class).getOwner((LivingEntity) primer);
+                    }
                 }
+            }
+
+            if (owner == null) {
+                Player placer = this.tracker.getPlacer(tnt.getLocation().getBlock());
+                if(placer != null) {
+                    owner = placer;
+                }
+            }
+
+            if (owner != null) {
+                this.tracker.setOwner(tnt, owner);
             }
         }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onTNTChain(EntityExplodeEvent event) {
-        if(!this.tracker.isEnabled(event.getEntity().getWorld())) return;
-
-        // Transfer ownership to chain-activated TNT
-        if(event.getEntity() instanceof TNTPrimed) {
-            Player owner = this.tracker.setOwner((TNTPrimed) event.getEntity(), null);
-            if(owner != null) {
-                for(Block block : event.blockList()) {
-                    if(block.getType() == Material.TNT) {
-                        this.tracker.setPlacer(block, owner);
-                    }
-                }
+    public void onDispense(BlockDispenseEntityEvent event) {
+        if (event.getEntity() instanceof TNTPrimed) {
+            OfflinePlayer placer = Trackers.getTracker(DispenserTracker.class).getPlacer(event.getBlock());
+            if(placer != null && placer.isOnline()) {
+                this.tracker.setOwner((TNTPrimed) event.getEntity(), placer.getPlayer());
             }
         }
     }
