@@ -1,5 +1,6 @@
 package tc.oc.tracker.trackers.base.gravity;
 
+import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
@@ -44,6 +45,9 @@ public class Fall {
 
     // The number of times the player has touched the ground during since isFalling was set true
     public int groundTouchCount;
+
+    // THe location the player was last on the ground
+    public Location whereOnGround;
 
     Fall(LivingEntity attacker, Cause cause, Player victim, From from, long attackTime) {
         this.attacker = attacker;

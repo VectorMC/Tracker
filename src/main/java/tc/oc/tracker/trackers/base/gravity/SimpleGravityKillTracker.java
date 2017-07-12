@@ -1,9 +1,5 @@
 package tc.oc.tracker.trackers.base.gravity;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import javax.annotation.Nonnull;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -13,11 +9,14 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.EntityDamageEvent;
-
 import tc.oc.tracker.base.AbstractTracker;
 import tc.oc.tracker.plugin.TrackerPlugin;
 import tc.oc.tracker.timer.TickTimer;
 import tc.oc.tracker.util.PlayerBlockChecker;
+
+import javax.annotation.Nonnull;
+import java.util.HashMap;
+import java.util.Iterator;
 
 public class SimpleGravityKillTracker extends AbstractTracker {
     private final HashMap<Location, BrokenBlock> brokenBlocks = new HashMap<>();
@@ -123,9 +122,10 @@ public class SimpleGravityKillTracker extends AbstractTracker {
      * Called whenever the player becomes "unsupported" to check if they were attacked recently enough for the attack
      * to be responsible for the fall
      */
-    private void playerBecameAirborne(Fall fall) {
+    private void playerBecameAirborne(Fall fall, Location where) {
         if(!fall.isFalling && !this.isSupported(fall) && this.timer.getTicks() - fall.attackTime <= MAX_KNOCKBACK_TIME) {
             fall.isFalling = true;
+            fall.whereOnGround = where;
         }
     }
 
@@ -174,10 +174,15 @@ public class SimpleGravityKillTracker extends AbstractTracker {
         fall.isSwimming = isSwimming;
         fall.isInLava = isInLava;
 
+        boolean supported = this.isSupported(fall);
+
         // If the victim is already in the air, immediately confirm that they are falling.
         // Otherwise, the fall will be confirmed when they leave the ground, if it happens
         // within the time window.
-        fall.isFalling = !this.isSupported(fall);
+        fall.isFalling = !supported;
+
+        if (supported)
+            fall.whereOnGround = loc;
 
         if(!fall.isFalling) {
             this.scheduleCheckFallCancelled(fall, MAX_KNOCKBACK_TIME);
@@ -251,7 +256,7 @@ public class SimpleGravityKillTracker extends AbstractTracker {
 
             if(becameAirborne) {
                 // Player moved out of water or off a ladder, check if it was caused by the attack
-                this.playerBecameAirborne(fall);
+                this.playerBecameAirborne(fall, player.getLocation());
             }
 
             if(isInLava != fall.isInLava) {
@@ -279,7 +284,7 @@ public class SimpleGravityKillTracker extends AbstractTracker {
                 this.scheduleCheckFallCancelled(fall, MAX_ON_GROUND_TIME + 1);
             } else {
                 // Falling player left the ground, check if it was caused by the attack
-                this.playerBecameAirborne(fall);
+                this.playerBecameAirborne(fall, player.getLocation());
             }
 
         } else if(!onGround) {
@@ -294,6 +299,7 @@ public class SimpleGravityKillTracker extends AbstractTracker {
                 fall.isInLava = PlayerBlockChecker.isSwimming(loc, Material.LAVA);
 
                 fall.isFalling = true;
+                fall.whereOnGround = brokenBlock.block.getLocation();
 
                 this.falls.put(player, fall);
             }

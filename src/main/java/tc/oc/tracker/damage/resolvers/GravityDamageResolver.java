@@ -1,12 +1,9 @@
 package tc.oc.tracker.damage.resolvers;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import com.google.common.base.Preconditions;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
-
 import tc.oc.tracker.DamageInfo;
 import tc.oc.tracker.DamageResolver;
 import tc.oc.tracker.Lifetime;
@@ -14,7 +11,8 @@ import tc.oc.tracker.damage.GravityDamageInfo;
 import tc.oc.tracker.trackers.base.gravity.Fall;
 import tc.oc.tracker.trackers.base.gravity.SimpleGravityKillTracker;
 
-import com.google.common.base.Preconditions;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class GravityDamageResolver implements DamageResolver {
     public GravityDamageResolver(@Nonnull SimpleGravityKillTracker tracker) {
@@ -27,7 +25,7 @@ public class GravityDamageResolver implements DamageResolver {
         Player victim = (Player) entity;
         Fall fall = this.tracker.getCausingFall(victim, damageEvent.getCause());
         if(fall != null) {
-            return new GravityDamageInfo(fall.attacker, fall.cause, fall.from);
+            return new GravityDamageInfo(fall.attacker, fall.cause, fall.from, fall.whereOnGround);
         } else {
             return null;
         }
