@@ -281,6 +281,7 @@ public class SimpleGravityKillTracker extends AbstractTracker {
                 // Falling player landed on the ground, cancel the fall if they are still there after MAX_ON_GROUND_TIME
                 fall.onGroundTime = this.timer.getTicks();
                 fall.groundTouchCount++;
+                fall.whereOnGround = player.getLocation();
                 this.scheduleCheckFallCancelled(fall, MAX_ON_GROUND_TIME + 1);
             } else {
                 // Falling player left the ground, check if it was caused by the attack
@@ -299,7 +300,7 @@ public class SimpleGravityKillTracker extends AbstractTracker {
                 fall.isInLava = PlayerBlockChecker.isSwimming(loc, Material.LAVA);
 
                 fall.isFalling = true;
-                fall.whereOnGround = brokenBlock.block.getLocation();
+                fall.whereOnGround = loc;
 
                 this.falls.put(player, fall);
             }
