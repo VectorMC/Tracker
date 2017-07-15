@@ -27,7 +27,7 @@ public class GravityDamageInfo extends AbstractDamageInfo {
         return this.cause;
     }
 
-    public @Nonnull Fall.From getFrom() {
+    public @Nullable Fall.From getFrom() {
         return this.from;
     }
 
@@ -37,7 +37,7 @@ public class GravityDamageInfo extends AbstractDamageInfo {
 
     private final @Nonnull Fall.Cause cause;
     private final @Nonnull Fall.From from;
-    private final @Nonnull Location fallLocation;
+    private final @Nullable Location fallLocation;
 
     @Override
     public @Nonnull String toString() {
