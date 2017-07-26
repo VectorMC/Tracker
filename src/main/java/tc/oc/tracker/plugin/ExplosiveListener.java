@@ -92,7 +92,7 @@ public class ExplosiveListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onTNTIgnite(ExplosionPrimeEvent event) {
         if (!this.tracker.isEnabled(event.getEntity().getWorld())) return;
 
