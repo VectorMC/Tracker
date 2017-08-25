@@ -2,10 +2,8 @@ package tc.oc.tracker;
 
 import java.util.List;
 import java.util.ListIterator;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import org.joda.time.Instant;
 
 /**
@@ -14,35 +12,43 @@ import org.joda.time.Instant;
  * Provides a convenient way to record damage objects pertaining to the victim.
  */
 public interface Lifetime {
-    @Nullable Instant getStart();
 
-    void setStart(@Nonnull Instant start);
+  @Nullable
+  Instant getStart();
 
-    @Nullable Instant getEnd();
+  void setStart(@Nonnull Instant start);
 
-    void setEnd(@Nonnull Instant end);
+  @Nullable
+  Instant getEnd();
 
-    @Nonnull List<Damage> getDamage();
+  void setEnd(@Nonnull Instant end);
 
-    @Nonnull ListIterator<Damage> getDamageFirst();
+  @Nonnull
+  List<Damage> getDamage();
 
-    @Nonnull ListIterator<Damage> getDamageLast();
+  @Nonnull
+  ListIterator<Damage> getDamageFirst();
 
-    @Nullable Damage getFirstDamage();
+  @Nonnull
+  ListIterator<Damage> getDamageLast();
 
-    @Nullable Damage getLastDamage();
+  @Nullable
+  Damage getFirstDamage();
 
-    /**
-     * Gets the last damage instance where the info object is an instance of
-     * the specified class. Uses {@link Class#isInstance(Object)} to check info
-     * objects.
-     *
-     * @param damageInfoClass DamageInfo class to check for
-     * @return Last damage that matched or null if none matched
-     *
-     * @throws NullPointerException if damageInfoClass is null
-     */
-    @Nullable Damage getLastDamage(@Nonnull Class<? extends DamageInfo> damageInfoClass);
+  @Nullable
+  Damage getLastDamage();
 
-    void addDamage(@Nonnull Damage damage);
+  /**
+   * Gets the last damage instance where the info object is an instance of
+   * the specified class. Uses {@link Class#isInstance(Object)} to check info
+   * objects.
+   *
+   * @param damageInfoClass DamageInfo class to check for
+   * @return Last damage that matched or null if none matched
+   * @throws NullPointerException if damageInfoClass is null
+   */
+  @Nullable
+  Damage getLastDamage(@Nonnull Class<? extends DamageInfo> damageInfoClass);
+
+  void addDamage(@Nonnull Damage damage);
 }

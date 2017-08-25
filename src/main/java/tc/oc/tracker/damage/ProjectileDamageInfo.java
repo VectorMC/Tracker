@@ -1,45 +1,57 @@
 package tc.oc.tracker.damage;
 
+import com.google.common.base.Preconditions;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Projectile;
-
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import tc.oc.tracker.base.AbstractDamageInfo;
 
-import com.google.common.base.Preconditions;
-
 public class ProjectileDamageInfo extends AbstractDamageInfo {
-    public ProjectileDamageInfo(@Nonnull Projectile projectile, @Nullable LivingEntity resolvedDamager, @Nullable Double projectileDistance) {
-        super(resolvedDamager);
 
-        Preconditions.checkNotNull(projectile, "projectile");
+  protected final
+  @Nonnull
+  Projectile projectile;
+  protected final
+  @Nullable
+  Double projectileDistance;
 
-        this.projectile = projectile;
-        this.projectileDistance = projectileDistance;
-    }
+  public ProjectileDamageInfo(@Nonnull Projectile projectile,
+      @Nullable LivingEntity resolvedDamager, @Nullable Double projectileDistance) {
+    super(resolvedDamager);
 
-    public @Nonnull Projectile getProjectile() {
-        return this.projectile;
-    }
+    Preconditions.checkNotNull(projectile, "projectile");
 
-    public @Nullable Double getDistance() {
-        return this.projectileDistance;
-    }
+    this.projectile = projectile;
+    this.projectileDistance = projectileDistance;
+  }
 
-    protected final @Nonnull Projectile projectile;
-    protected final @Nullable Double projectileDistance;
+  public
+  @Nonnull
+  Projectile getProjectile() {
+    return this.projectile;
+  }
 
-    @Override
-    public @Nonnull String toString() {
-        return "ProjectileDamageInfo{shooter=" + this.resolvedDamager + ",projectile=" + this.projectile + ",distance=" + this.projectileDistance + "}";
-    }
+  public
+  @Nullable
+  Double getDistance() {
+    return this.projectileDistance;
+  }
+
+  @Override
+  public
+  @Nonnull
+  String toString() {
+    return "ProjectileDamageInfo{shooter=" + this.resolvedDamager + ",projectile=" + this.projectile
+        + ",distance=" + this.projectileDistance + "}";
+  }
 
 
-    @Override
-    public @Nonnull DamageCause getDamageCause() {
-        return DamageCause.PROJECTILE;
-    }
+  @Override
+  public
+  @Nonnull
+  DamageCause getDamageCause() {
+    return DamageCause.PROJECTILE;
+  }
 }

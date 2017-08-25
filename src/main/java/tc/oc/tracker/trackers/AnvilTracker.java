@@ -2,25 +2,29 @@ package tc.oc.tracker.trackers;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.entity.FallingBlock;
-
 import tc.oc.tracker.Tracker;
 
 public interface AnvilTracker extends Tracker {
-    boolean hasOwner(@Nonnull FallingBlock entity);
 
-    @Nullable OfflinePlayer getOwner(@Nonnull FallingBlock anvil);
+  boolean hasOwner(@Nonnull FallingBlock entity);
 
-    @Nullable OfflinePlayer setOwner(@Nonnull FallingBlock anvil, @Nullable OfflinePlayer offlinePlayer);
+  @Nullable
+  OfflinePlayer getOwner(@Nonnull FallingBlock anvil);
 
-    boolean hasPlacer(@Nonnull Block block);
+  @Nullable
+  OfflinePlayer setOwner(@Nonnull FallingBlock anvil, @Nullable OfflinePlayer offlinePlayer);
 
-    @Nullable OfflinePlayer getPlacer(@Nonnull Block block);
+  boolean hasPlacer(@Nonnull Block block);
 
-    @Nullable OfflinePlayer setPlacer(@Nonnull Block block, @Nonnull OfflinePlayer offlinePlayer);
+  @Nullable
+  OfflinePlayer getPlacer(@Nonnull Block block);
 
-    @Nonnull OfflinePlayer clearPlacer(@Nullable Block block);
+  @Nullable
+  OfflinePlayer setPlacer(@Nonnull Block block, @Nonnull OfflinePlayer offlinePlayer);
+
+  @Nonnull
+  OfflinePlayer clearPlacer(@Nullable Block block);
 }

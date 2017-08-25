@@ -1,17 +1,13 @@
 package tc.oc.tracker.base;
 
-import java.util.Set;
-
-import javax.annotation.Nonnull;
-
-import org.bukkit.Bukkit;
-import org.bukkit.World;
-
-import tc.oc.tracker.Tracker;
-
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
+import java.util.Set;
+import javax.annotation.Nonnull;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import tc.oc.tracker.Tracker;
 
 /**
  * Abstract class for implementing {@link Tracker}.
@@ -21,97 +17,100 @@ import com.google.common.collect.Sets;
  * and {@link #onDisable} methods.
  */
 public abstract class AbstractTracker implements Tracker {
-    /**
-     * Method called when the tracker is enabled for a world.
-     *
-     * @param world World the tracker is now enabled in
-     */
-    protected void onEnable(World world) { }
 
-    /**
-     * Method called when the tracker is disabled for a world.
-     *
-     * Will be called before the {@link #clear} method.
-     *
-     * @param world World the tracker is now disabled in
-     */
-    protected void onDisable(World world) { }
+  private final Set<World> oppositeWorlds = Sets.newHashSet();
+  // implementation
+  private boolean enabled = false;
 
-    // implementation
-    private boolean enabled = false;
-    private final Set<World> oppositeWorlds = Sets.newHashSet();
+  /**
+   * Method called when the tracker is enabled for a world.
+   *
+   * @param world World the tracker is now enabled in
+   */
+  protected void onEnable(World world) {
+  }
 
-    public boolean isEnabled(@Nonnull World world) {
-        Preconditions.checkNotNull(world, "world");
+  /**
+   * Method called when the tracker is disabled for a world.
+   *
+   * Will be called before the {@link #clear} method.
+   *
+   * @param world World the tracker is now disabled in
+   */
+  protected void onDisable(World world) {
+  }
 
-        boolean opposite = this.oppositeWorlds.contains(world);
+  public boolean isEnabled(@Nonnull World world) {
+    Preconditions.checkNotNull(world, "world");
 
-        return this.enabled ^ opposite;
+    boolean opposite = this.oppositeWorlds.contains(world);
+
+    return this.enabled ^ opposite;
+  }
+
+  public boolean enable() {
+    return this.setEnabled(true);
+  }
+
+  public boolean enable(@Nonnull World world) {
+    return this.setEnabled(true, world);
+  }
+
+  public boolean disable() {
+    return this.setEnabled(false);
+  }
+
+  public boolean disable(@Nonnull World world) {
+    return this.setEnabled(false, world);
+  }
+
+  private boolean setEnabled(boolean now) {
+    Set<World> changed = this.getOppositeWorlds(now);
+
+    this.enabled = now;
+    this.oppositeWorlds.clear();
+
+    for (World world : changed) {
+      this.notifyChange(now, world);
     }
 
-    public boolean enable() {
-        return this.setEnabled(true);
+    return !changed.isEmpty();
+  }
+
+  private boolean setEnabled(boolean now, @Nonnull World world) {
+    Preconditions.checkNotNull(world, "world");
+
+    boolean changed = false;
+
+    if (this.enabled == now) {
+      changed = this.oppositeWorlds.remove(world);
+    } else {
+      changed = this.oppositeWorlds.add(world);
     }
 
-    public boolean enable(@Nonnull World world) {
-        return this.setEnabled(true, world);
+    if (changed) {
+      this.notifyChange(now, world);
     }
 
-    public boolean disable() {
-        return this.setEnabled(false);
+    return changed;
+  }
+
+  private Set<World> getOppositeWorlds(boolean now) {
+    if (this.enabled == now) {
+      return ImmutableSet.copyOf(this.oppositeWorlds);
+    } else {
+      Set<World> opp = Sets.newHashSet(Bukkit.getWorlds());
+      opp.removeAll(this.oppositeWorlds);
+      return ImmutableSet.copyOf(opp);
     }
+  }
 
-    public boolean disable(@Nonnull World world) {
-        return this.setEnabled(false, world);
+  private void notifyChange(boolean now, @Nonnull World world) {
+    if (now) {
+      this.onDisable(world);
+      this.clear(world);
+    } else {
+      this.onEnable(world);
     }
-
-    private boolean setEnabled(boolean now) {
-        Set<World> changed = this.getOppositeWorlds(now);
-
-        this.enabled = now;
-        this.oppositeWorlds.clear();
-
-        for(World world : changed) {
-            this.notifyChange(now, world);
-        }
-
-        return !changed.isEmpty();
-    }
-
-    private boolean setEnabled(boolean now, @Nonnull World world) {
-        Preconditions.checkNotNull(world, "world");
-
-        boolean changed = false;
-
-        if(this.enabled == now) {
-            changed = this.oppositeWorlds.remove(world);
-        } else {
-            changed = this.oppositeWorlds.add(world);
-        }
-
-        if(changed) {
-            this.notifyChange(now, world);
-        }
-
-        return changed;
-    }
-
-    private Set<World> getOppositeWorlds(boolean now) {
-        if(this.enabled == now) {
-            return ImmutableSet.copyOf(this.oppositeWorlds);
-        } else {
-            Set<World> opp = Sets.newHashSet(Bukkit.getWorlds());
-            opp.removeAll(this.oppositeWorlds);
-            return ImmutableSet.copyOf(opp);
-        }
-    }
-
-    private void notifyChange(boolean now, @Nonnull World world) {
-        if(now) {
-            this.onDisable(world);
-            this.clear(world);
-        } else {
-            this.onEnable(world);
-        }
-    }
+  }
 }

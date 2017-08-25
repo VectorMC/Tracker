@@ -1,51 +1,69 @@
 package tc.oc.tracker.damage;
 
 import com.google.common.base.Preconditions;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import tc.oc.tracker.base.AbstractDamageInfo;
 import tc.oc.tracker.trackers.base.gravity.Fall;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 public class GravityDamageInfo extends AbstractDamageInfo {
-    public GravityDamageInfo(@Nullable LivingEntity resolvedDamager, @Nonnull Fall.Cause cause, @Nonnull Fall.From from, @Nonnull Location fallLocation) {
-        super(resolvedDamager);
 
-        Preconditions.checkNotNull(resolvedDamager, "damager");
-        Preconditions.checkNotNull(cause, "cause");
-        Preconditions.checkNotNull(from, "from");
+  private final
+  @Nonnull
+  Fall.Cause cause;
+  private final
+  @Nonnull
+  Fall.From from;
+  private final
+  @Nullable
+  Location fallLocation;
 
-        this.cause = cause;
-        this.from = from;
-        this.fallLocation = fallLocation;
-    }
+  public GravityDamageInfo(@Nullable LivingEntity resolvedDamager, @Nonnull Fall.Cause cause,
+      @Nonnull Fall.From from, @Nonnull Location fallLocation) {
+    super(resolvedDamager);
 
-    public @Nonnull Fall.Cause getCause() {
-        return this.cause;
-    }
+    Preconditions.checkNotNull(resolvedDamager, "damager");
+    Preconditions.checkNotNull(cause, "cause");
+    Preconditions.checkNotNull(from, "from");
 
-    public @Nullable Fall.From getFrom() {
-        return this.from;
-    }
+    this.cause = cause;
+    this.from = from;
+    this.fallLocation = fallLocation;
+  }
 
-    public @Nonnull Location getFallLocation() {
-        return this.fallLocation;
-    }
+  public
+  @Nonnull
+  Fall.Cause getCause() {
+    return this.cause;
+  }
 
-    private final @Nonnull Fall.Cause cause;
-    private final @Nonnull Fall.From from;
-    private final @Nullable Location fallLocation;
+  public
+  @Nullable
+  Fall.From getFrom() {
+    return this.from;
+  }
 
-    @Override
-    public @Nonnull String toString() {
-        return "GravityDamageInfo{damager=" + this.resolvedDamager + ",cause=" + this.cause + ",from=" + this.from + "}";
-    }
+  public
+  @Nonnull
+  Location getFallLocation() {
+    return this.fallLocation;
+  }
 
-    @Override
-    public @Nonnull DamageCause getDamageCause() {
-        return DamageCause.FALL;
-    }
+  @Override
+  public
+  @Nonnull
+  String toString() {
+    return "GravityDamageInfo{damager=" + this.resolvedDamager + ",cause=" + this.cause + ",from="
+        + this.from + "}";
+  }
+
+  @Override
+  public
+  @Nonnull
+  DamageCause getDamageCause() {
+    return DamageCause.FALL;
+  }
 }

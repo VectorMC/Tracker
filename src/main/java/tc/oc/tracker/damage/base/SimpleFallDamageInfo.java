@@ -1,33 +1,33 @@
 package tc.oc.tracker.damage.base;
 
+import com.google.common.base.Preconditions;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import org.bukkit.entity.LivingEntity;
-
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import tc.oc.tracker.base.AbstractDamageInfo;
 import tc.oc.tracker.damage.FallDamageInfo;
 
-import com.google.common.base.Preconditions;
-
 public class SimpleFallDamageInfo extends AbstractDamageInfo implements FallDamageInfo {
-    public SimpleFallDamageInfo(@Nullable LivingEntity resolvedDamager, float fallDistance) {
-        super(resolvedDamager);
 
-        Preconditions.checkArgument(fallDistance >= 0, "fall distance must be >= 0");
+  private final float fallDistance;
 
-        this.fallDistance = fallDistance;
-    }
+  public SimpleFallDamageInfo(@Nullable LivingEntity resolvedDamager, float fallDistance) {
+    super(resolvedDamager);
 
-    public float getFallDistance() {
-        return this.fallDistance;
-    }
+    Preconditions.checkArgument(fallDistance >= 0, "fall distance must be >= 0");
 
-    private final float fallDistance;
+    this.fallDistance = fallDistance;
+  }
 
-    @Override
-    public @Nonnull DamageCause getDamageCause() {
-        return DamageCause.FALL;
-    }
+  public float getFallDistance() {
+    return this.fallDistance;
+  }
+
+  @Override
+  public
+  @Nonnull
+  DamageCause getDamageCause() {
+    return DamageCause.FALL;
+  }
 }

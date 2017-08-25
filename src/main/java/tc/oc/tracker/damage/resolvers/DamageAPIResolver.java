@@ -2,11 +2,14 @@ package tc.oc.tracker.damage.resolvers;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityDamageEvent;
-
-import tc.oc.tracker.*;
+import tc.oc.tracker.Damage;
+import tc.oc.tracker.DamageAPI;
+import tc.oc.tracker.DamageInfo;
+import tc.oc.tracker.DamageResolver;
+import tc.oc.tracker.DamageResolvers;
+import tc.oc.tracker.Lifetime;
 import tc.oc.tracker.plugin.DamageAPIHelper;
 
 /**
@@ -19,12 +22,18 @@ import tc.oc.tracker.plugin.DamageAPIHelper;
  * event listeners.
  */
 public class DamageAPIResolver implements DamageResolver {
-    /** @see DamageResolvers#resolve */
-    public @Nullable DamageInfo resolve(@Nonnull LivingEntity entity, @Nonnull Lifetime lifetime, @Nonnull EntityDamageEvent damageEvent) {
-        return DamageAPIHelper.get().getEventDamageInfo(damageEvent);
-    }
 
-    static {
-        DamageResolvers.getManager().register(new DamageAPIResolver());
-    }
+  static {
+    DamageResolvers.getManager().register(new DamageAPIResolver());
+  }
+
+  /**
+   * @see DamageResolvers#resolve
+   */
+  public
+  @Nullable
+  DamageInfo resolve(@Nonnull LivingEntity entity, @Nonnull Lifetime lifetime,
+      @Nonnull EntityDamageEvent damageEvent) {
+    return DamageAPIHelper.get().getEventDamageInfo(damageEvent);
+  }
 }

@@ -1,35 +1,41 @@
 package tc.oc.tracker.damage;
 
+import com.google.common.base.Preconditions;
 import javax.annotation.Nonnull;
-
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-
 import tc.oc.tracker.base.AbstractDamageInfo;
 
-import com.google.common.base.Preconditions;
-
 public class BukkitDamageInfo extends AbstractDamageInfo {
-    public BukkitDamageInfo(@Nonnull DamageCause cause) {
-        super(null);
 
-        Preconditions.checkNotNull(cause, "damage cause");
+  private final
+  @Nonnull
+  DamageCause cause;
 
-        this.cause = cause;
-    }
+  public BukkitDamageInfo(@Nonnull DamageCause cause) {
+    super(null);
 
-    public @Nonnull DamageCause getCause() {
-        return this.cause;
-    }
+    Preconditions.checkNotNull(cause, "damage cause");
 
-    private final @Nonnull DamageCause cause;
+    this.cause = cause;
+  }
 
-    @Override
-    public @Nonnull String toString() {
-        return "BukkitDamageInfo{cause=" + this.cause + "}";
-    }
+  public
+  @Nonnull
+  DamageCause getCause() {
+    return this.cause;
+  }
 
-    @Override
-    public @Nonnull DamageCause getDamageCause() {
-        return this.cause;
-    }
+  @Override
+  public
+  @Nonnull
+  String toString() {
+    return "BukkitDamageInfo{cause=" + this.cause + "}";
+  }
+
+  @Override
+  public
+  @Nonnull
+  DamageCause getDamageCause() {
+    return this.cause;
+  }
 }

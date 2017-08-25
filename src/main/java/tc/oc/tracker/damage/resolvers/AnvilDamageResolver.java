@@ -6,7 +6,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-
 import tc.oc.tracker.DamageInfo;
 import tc.oc.tracker.DamageResolver;
 import tc.oc.tracker.Lifetime;
@@ -14,28 +13,31 @@ import tc.oc.tracker.damage.AnvilDamageInfo;
 import tc.oc.tracker.trackers.AnvilTracker;
 
 public class AnvilDamageResolver implements DamageResolver {
-    private final AnvilTracker anvilTracker;
 
-    public AnvilDamageResolver(AnvilTracker anvilTracker) {
-        this.anvilTracker = anvilTracker;
-    }
+  private final AnvilTracker anvilTracker;
 
-    public DamageInfo resolve(LivingEntity entity, Lifetime lifetime, EntityDamageEvent damageEvent) {
-        if(damageEvent instanceof EntityDamageByEntityEvent) {
-            EntityDamageByEntityEvent event = (EntityDamageByEntityEvent) damageEvent;
+  public AnvilDamageResolver(AnvilTracker anvilTracker) {
+    this.anvilTracker = anvilTracker;
+  }
 
-            if(event.getDamager() instanceof FallingBlock) {
-                FallingBlock anvil = (FallingBlock) event.getDamager();
-                OfflinePlayer offlineOwner = this.anvilTracker.getOwner(anvil);
-                Player onlineOwner = null;
+  public DamageInfo resolve(LivingEntity entity, Lifetime lifetime, EntityDamageEvent damageEvent) {
+    if (damageEvent instanceof EntityDamageByEntityEvent) {
+      EntityDamageByEntityEvent event = (EntityDamageByEntityEvent) damageEvent;
 
-                if(offlineOwner != null) onlineOwner = offlineOwner.getPlayer();
+      if (event.getDamager() instanceof FallingBlock) {
+        FallingBlock anvil = (FallingBlock) event.getDamager();
+        OfflinePlayer offlineOwner = this.anvilTracker.getOwner(anvil);
+        Player onlineOwner = null;
 
-                return new AnvilDamageInfo(anvil, onlineOwner, offlineOwner);
-            }
+        if (offlineOwner != null) {
+          onlineOwner = offlineOwner.getPlayer();
         }
 
-        return null;
+        return new AnvilDamageInfo(anvil, onlineOwner, offlineOwner);
+      }
     }
+
+    return null;
+  }
 
 }

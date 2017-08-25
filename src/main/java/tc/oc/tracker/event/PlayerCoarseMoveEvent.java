@@ -7,49 +7,50 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 
 public class PlayerCoarseMoveEvent extends PlayerEvent implements Cancellable {
-    private static final HandlerList handlers = new HandlerList();
-    private Location from;
-    private Location to;
-    private boolean cancelled;
 
-    public PlayerCoarseMoveEvent(final Player player, Location from, Location to) {
-        super(player);
-        this.from = from;
-        this.to = to;
-    }
+  private static final HandlerList handlers = new HandlerList();
+  private Location from;
+  private Location to;
+  private boolean cancelled;
 
-    public Location getFrom() {
-        return this.from;
-    }
+  public PlayerCoarseMoveEvent(final Player player, Location from, Location to) {
+    super(player);
+    this.from = from;
+    this.to = to;
+  }
 
-    public void setFrom(Location from) {
-        this.from = from;
-    }
+  public static HandlerList getHandlerList() {
+    return handlers;
+  }
 
-    public Location getTo() {
-        return this.to;
-    }
+  public Location getFrom() {
+    return this.from;
+  }
 
-    public void setTo(Location to) {
-        this.to = to;
-    }
+  public void setFrom(Location from) {
+    this.from = from;
+  }
 
-    @Override
-    public boolean isCancelled() {
-        return cancelled;
-    }
+  public Location getTo() {
+    return this.to;
+  }
 
-    @Override
-    public void setCancelled(boolean cancelled) {
-        this.cancelled = cancelled;
-    }
+  public void setTo(Location to) {
+    this.to = to;
+  }
 
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
+  @Override
+  public boolean isCancelled() {
+    return cancelled;
+  }
 
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
+  @Override
+  public void setCancelled(boolean cancelled) {
+    this.cancelled = cancelled;
+  }
+
+  @Override
+  public HandlerList getHandlers() {
+    return handlers;
+  }
 }

@@ -1,55 +1,55 @@
 package tc.oc.tracker;
 
+import com.google.common.base.Preconditions;
 import javax.annotation.Nonnull;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-
 import tc.oc.tracker.plugin.DamageAPIHelper;
-
-import com.google.common.base.Preconditions;
 
 /**
  * Provides convenient static API calls for other plugins to use.
  */
 public final class DamageAPI {
-    private DamageAPI() { }
 
-    /**
-     * Inflicts the given damage on an entity.
-     *
-     * This method will call the appropriate damage method and fire an {@link EntityDamageEvent}.
-     *
-     * @param entity Entity to inflict damage upon
-     * @param damage Amount of half-hearts of damage to inflict
-     * @param info {@link DamageInfo} object that details the type of damage
-     * @return the final {@link Damage} object (never null)
-     *
-     * @throws NullPointerException if entity or info is null
-     * @throws IllegalArgumentExcpetion if hearts is less than zero
-     */
-    public static @Nonnull Damage inflictDamage(@Nonnull LivingEntity entity, int damage, @Nonnull DamageInfo info) {
-        Preconditions.checkNotNull(entity, "living entity");
-        Preconditions.checkArgument(damage >= 0, "damage must be greater than or equal to zero");
-        Preconditions.checkNotNull(info, "damage info");
+  private DamageAPI() {
+  }
 
-        DamageAPIHelper helper = DamageAPIHelper.get();
+  /**
+   * Inflicts the given damage on an entity.
+   *
+   * This method will call the appropriate damage method and fire an {@link EntityDamageEvent}.
+   *
+   * @param entity Entity to inflict damage upon
+   * @param damage Amount of half-hearts of damage to inflict
+   * @param info {@link DamageInfo} object that details the type of damage
+   * @return the final {@link Damage} object (never null)
+   * @throws NullPointerException if entity or info is null
+   * @throws IllegalArgumentExcpetion if hearts is less than zero
+   */
+  public static
+  @Nonnull
+  Damage inflictDamage(@Nonnull LivingEntity entity, int damage, @Nonnull DamageInfo info) {
+    Preconditions.checkNotNull(entity, "living entity");
+    Preconditions.checkArgument(damage >= 0, "damage must be greater than or equal to zero");
+    Preconditions.checkNotNull(info, "damage info");
 
-        EntityDamageEvent event = new EntityDamageEvent(entity, DamageCause.CUSTOM, damage);
-        helper.setEventDamageInfo(event, info);
+    DamageAPIHelper helper = DamageAPIHelper.get();
 
-        Bukkit.getPluginManager().callEvent(event);
+    EntityDamageEvent event = new EntityDamageEvent(entity, DamageCause.CUSTOM, damage);
+    helper.setEventDamageInfo(event, info);
 
-        if(event.isCancelled()) {
-            return null;
-        }
+    Bukkit.getPluginManager().callEvent(event);
 
-        entity.damage(event.getDamage());
-
-        helper.setEventDamageInfo(event, null);
-
-        return helper.getOurEvent(event).toDamageObject();
+    if (event.isCancelled()) {
+      return null;
     }
+
+    entity.damage(event.getDamage());
+
+    helper.setEventDamageInfo(event, null);
+
+    return helper.getOurEvent(event).toDamageObject();
+  }
 }

@@ -2,26 +2,30 @@ package tc.oc.tracker.trackers;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-
 import tc.oc.tracker.Tracker;
 
 public interface DispenserTracker extends Tracker {
-    boolean hasOwner(@Nonnull Entity entity);
 
-    @Nullable OfflinePlayer getOwner(@Nonnull Entity entity);
+  boolean hasOwner(@Nonnull Entity entity);
 
-    @Nullable OfflinePlayer setOwner(@Nonnull Entity entity, @Nullable Player player);
+  @Nullable
+  OfflinePlayer getOwner(@Nonnull Entity entity);
 
-    boolean hasPlacer(@Nonnull Block block);
+  @Nullable
+  OfflinePlayer setOwner(@Nonnull Entity entity, @Nullable Player player);
 
-    @Nullable OfflinePlayer getPlacer(@Nonnull Block block);
+  boolean hasPlacer(@Nonnull Block block);
 
-    @Nullable OfflinePlayer setPlacer(@Nonnull Block block, @Nullable Player player);
+  @Nullable
+  OfflinePlayer getPlacer(@Nonnull Block block);
 
-    @Nonnull OfflinePlayer clearPlacer(@Nonnull Block block);
+  @Nullable
+  OfflinePlayer setPlacer(@Nonnull Block block, @Nullable Player player);
+
+  @Nonnull
+  OfflinePlayer clearPlacer(@Nonnull Block block);
 }
