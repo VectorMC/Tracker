@@ -63,6 +63,11 @@
       <artifactId>joda-time</artifactId>
       <version>2.1</version>
     </dependency>
+    <dependency>
+      <groupId>net.avicus</groupId>
+      <artifactId>minecraft-api</artifactId>
+      <version>1.12-SNAPSHOT</version>
+    </dependency>
   </dependencies>
   <build>
     <sourceDirectory>${basedir}/src/main/java/</sourceDirectory>

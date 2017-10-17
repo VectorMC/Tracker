@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
+import org.bukkit.event.RegisteredHandler;
 import org.bukkit.plugin.AuthorNagException;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredListener;
@@ -27,35 +28,22 @@ public final class EventUtil {
     //
     // The following is copied from SimplePluginManager#fireEvent with
     // modifications
-    for (RegisteredListener registration : handlers.getRegisteredListeners()) {
-      if (!registration.getPlugin().isEnabled()) {
+    for (RegisteredHandler registration : handlers.getRegisteredListeners()) {
+      if (!registration.isEnabled())
         continue;
-      }
 
       // skip over registrations that are not in the correct priority
-      if (registration.getPriority() != priority) {
+      if (registration.meta().priority() != priority) {
         continue;
       }
 
       try {
         registration.callEvent(event);
       } catch (AuthorNagException ex) {
-        Plugin plugin = registration.getPlugin();
-
-        if (plugin.isNaggable()) {
-          plugin.setNaggable(false);
-
-          Bukkit.getLogger().log(Level.SEVERE, String.format(
-              "Nag author(s): '%s' of '%s' about the following: %s",
-              plugin.getDescription().getAuthors(),
-              plugin.getDescription().getFullName(),
-              ex.getMessage()
-          ));
-        }
+        //
       } catch (Throwable ex) {
         Bukkit.getLogger().log(Level.SEVERE,
-            "Could not pass event " + event.getEventName() + " to " + registration.getPlugin()
-                .getDescription().getFullName(), ex);
+            "Could not pass event " + event.getEventName() + " to " + registration.meta().toString(), ex);
       }
     }
   }
