@@ -9,19 +9,19 @@
   <description>Bukkit plugin and API for tracking entity damage and deaths.</description>
 
   <scm>
-    <connection>scm:git:git@github.com:Avicus/Tracker.git</connection>
-    <developerConnection>scm:git:git@github.com:Avicus/Tracker.git</developerConnection>
-    <url>https://github.com/Avicus/Tracker</url>
+    <connection>scm:git:git@github.com:VectorMC/Tracker.git</connection>
+    <developerConnection>scm:git:git@github.com:VectorMC/Tracker.git</developerConnection>
+    <url>https://github.com/VectorMC/Tracker</url>
   </scm>
 
   <distributionManagement>
     <repository>
-      <id>avicus-repo</id>
-      <url>https://repo.avicus.net/content/repositories/releases/</url>
+      <id>vector-repo</id>
+      <url>https://repo.vectormc.net/artifactory/private</url>
     </repository>
     <snapshotRepository>
-      <id>avicus-repo</id>
-      <url>https://repo.avicus.net/content/repositories/snapshots/</url>
+      <id>vector-repo</id>
+      <url>https://repo.vectormc.net/artifactory/private</url>
     </snapshotRepository>
   </distributionManagement>
 
@@ -31,12 +31,12 @@
       <url>https://repo.oc.tc/content/groups/public</url>
     </repository>
     <repository>
-      <id>avicus-public</id>
-      <url>https://repo.avicus.net/content/groups/public</url>
+      <id>vector-public</id>
+      <url>https://repo.vectormc.net/artifactory/public</url>
     </repository>
     <repository>
       <id>avicus-private</id>
-      <url>https://repo.avicus.net/content/groups/private/</url>
+      <url>https://repo.vectormc.net/artifactory/private</url>
     </repository>
   </repositories>
 
